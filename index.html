@@ -1,0 +1,132 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PG Hostel Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <h1>PG Hostel Management System</h1>
+    </header>
+
+    <section class="dashboard">
+
+      <div class="card">
+        <h2>Total Floors</h2>
+        <p>5</p>
+      </div>
+
+      <div class="card">
+        <h2>Total Rooms</h2>
+        <p>25</p>
+      </div>
+
+      <div class="card">
+        <h2>Total Beds</h2>
+        <p>125</p>
+      </div>
+
+      <div class="card">
+        <h2>Occupied Beds</h2>
+        <p id="occupiedBeds">0</p>
+      </div>
+
+    </section>
+
+    <section class="form-section">
+
+      <h2>Add Member</h2>
+
+      <form id="memberForm">
+
+        <input
+          type="text"
+          id="name"
+          placeholder="Member Name"
+          required
+        >
+
+        <input
+          type="tel"
+          id="phone"
+          placeholder="Phone Number"
+          required
+        >
+
+        <select id="floor" required>
+          <option value="">Select Floor</option>
+          <option value="1">Floor 1</option>
+          <option value="2">Floor 2</option>
+          <option value="3">Floor 3</option>
+          <option value="4">Floor 4</option>
+          <option value="5">Floor 5</option>
+        </select>
+
+        <select id="room" required>
+          <option value="">Select Room</option>
+          <option value="1">Room 1</option>
+          <option value="2">Room 2</option>
+          <option value="3">Room 3</option>
+          <option value="4">Room 4</option>
+          <option value="5">Room 5</option>
+        </select>
+
+        <select id="bed" required>
+          <option value="">Select Bed</option>
+          <option value="1">Bed 1</option>
+          <option value="2">Bed 2</option>
+          <option value="3">Bed 3</option>
+          <option value="4">Bed 4</option>
+          <option value="5">Bed 5</option>
+        </select>
+
+        <input
+          type="number"
+          id="rent"
+          placeholder="Monthly Rent"
+          required
+        >
+
+        <input
+          type="date"
+          id="dueDate"
+          required
+        >
+
+        <button type="submit">
+          Add Member
+        </button>
+
+      </form>
+
+    </section>
+
+    <section class="alert-section">
+
+      <h2>Upcoming Payment Alerts</h2>
+
+      <div id="alertsContainer"></div>
+
+    </section>
+
+    <section class="floors-section">
+
+      <h2>Floor & Bed Layout</h2>
+
+      <div id="floorsContainer"></div>
+
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
