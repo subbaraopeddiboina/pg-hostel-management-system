@@ -3,48 +3,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PG Hostel Management</title>
-  <link rel="stylesheet" href="style.css">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Luxury PG Hostel Management
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
 </head>
+
 <body>
 
-  <div class="container">
+<div class="main-container">
 
-    <header>
-      <h1>PG Hostel Management System</h1>
-    </header>
+  <header class="hero-section">
 
-    <section class="dashboard">
+    <div class="hero-content">
 
-      <div class="card">
-        <h2>Total Floors</h2>
-        <p>5</p>
-      </div>
+      <h1>
+        PG Hostel Management
+      </h1>
 
-      <div class="card">
-        <h2>Total Rooms</h2>
-        <p>25</p>
-      </div>
+      <p>
+        Luxury Smart Bed Booking & Rent Alert System
+      </p>
 
-      <div class="card">
-        <h2>Total Beds</h2>
-        <p>125</p>
-      </div>
+    </div>
 
-      <div class="card">
-        <h2>Occupied Beds</h2>
-        <p id="occupiedBeds">0</p>
-      </div>
+  </header>
 
-    </section>
+  <section class="dashboard">
 
-    <section class="form-section">
+    <div class="dashboard-card">
+      <h2>Floors</h2>
+      <p>5</p>
+    </div>
 
-      <h2>Add Member</h2>
+    <div class="dashboard-card">
+      <h2>Rooms</h2>
+      <p>20</p>
+    </div>
 
-      <form id="memberForm">
+    <div class="dashboard-card">
+      <h2>Total Beds</h2>
+      <p>100</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h2>Occupied</h2>
+      <p id="occupiedBeds">0</p>
+    </div>
+
+  </section>
+
+  <section class="booking-section">
+
+    <h2>
+      Book Bed
+    </h2>
+
+    <form id="memberForm">
+
+      <div class="input-grid">
 
         <input
           type="text"
@@ -54,38 +89,20 @@
         >
 
         <input
-          type="tel"
-          id="phone"
-          placeholder="Phone Number"
+          type="text"
+          id="aadhaar"
+          placeholder="Aadhaar Number"
+          maxlength="12"
           required
         >
 
-        <select id="floor" required>
-          <option value="">Select Floor</option>
-          <option value="1">Floor 1</option>
-          <option value="2">Floor 2</option>
-          <option value="3">Floor 3</option>
-          <option value="4">Floor 4</option>
-          <option value="5">Floor 5</option>
-        </select>
-
-        <select id="room" required>
-          <option value="">Select Room</option>
-          <option value="1">Room 1</option>
-          <option value="2">Room 2</option>
-          <option value="3">Room 3</option>
-          <option value="4">Room 4</option>
-          <option value="5">Room 5</option>
-        </select>
-
-        <select id="bed" required>
-          <option value="">Select Bed</option>
-          <option value="1">Bed 1</option>
-          <option value="2">Bed 2</option>
-          <option value="3">Bed 3</option>
-          <option value="4">Bed 4</option>
-          <option value="5">Bed 5</option>
-        </select>
+        <input
+          type="text"
+          id="phone"
+          placeholder="Phone Number"
+          maxlength="10"
+          required
+        >
 
         <input
           type="number"
@@ -95,38 +112,65 @@
         >
 
         <input
-          type="date"
+          type="text"
+          id="roomNumber"
+          placeholder="Room Number"
+          readonly
+        >
+
+        <input
+          type="text"
+          id="bedNumber"
+          placeholder="Bed Number"
+          readonly
+        >
+
+        <input
+          type="text"
           id="dueDate"
+          placeholder="DD/MM/YYYY"
           required
         >
 
-        <button type="submit">
-          Add Member
-        </button>
+      </div>
 
-      </form>
+      <textarea
+        id="address"
+        placeholder="Full Address"
+        required
+      ></textarea>
 
-    </section>
+      <button type="submit">
+        Confirm Booking
+      </button>
 
-    <section class="alert-section">
+    </form>
 
-      <h2>Upcoming Payment Alerts</h2>
+  </section>
 
-      <div id="alertsContainer"></div>
+  <section class="alert-section">
 
-    </section>
+    <h2>
+      Upcoming Payment Alerts
+    </h2>
 
-    <section class="floors-section">
+    <div id="alertsContainer"></div>
 
-      <h2>Floor & Bed Layout</h2>
+  </section>
 
-      <div id="floorsContainer"></div>
+  <section class="layout-section">
 
-    </section>
+    <h2>
+      Hostel Layout
+    </h2>
 
-  </div>
+    <div id="floorsContainer"></div>
 
-  <script src="script.js"></script>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
