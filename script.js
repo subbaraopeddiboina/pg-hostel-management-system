@@ -6,15 +6,22 @@ document.getElementById("memberForm");
 const floorsContainer =
 document.getElementById("floorsContainer");
 
-const alertsContainer =
-document.getElementById("alertsContainer");
-
 const occupiedBeds =
 document.getElementById("occupiedBeds");
+
+const alertsContainer =
+document.getElementById("alertsContainer");
 
 let members =
 JSON.parse(localStorage.getItem("members"))
 || [];
+
+let selectedRoom = "";
+let selectedBed = "";
+
+displayFloors();
+
+displayAlerts();
 
 memberForm.addEventListener(
   "submit",
@@ -25,17 +32,14 @@ memberForm.addEventListener(
     const name =
     document.getElementById("name").value;
 
+    const aadhaar =
+    document.getElementById("aadhaar").value;
+
     const phone =
     document.getElementById("phone").value;
 
-    const floor =
-    document.getElementById("floor").value;
-
-    const room =
-    document.getElementById("room").value;
-
-    const bed =
-    document.getElementById("bed").value;
+    const address =
+    document.getElementById("address").value;
 
     const rent =
     document.getElementById("rent").value;
@@ -43,34 +47,60 @@ memberForm.addEventListener(
     const dueDate =
     document.getElementById("dueDate").value;
 
+    if(
+      selectedRoom === "" ||
+      selectedBed === ""
+    ){
+
+      alert("Select Bed First");
+
+      return;
+    }
+
     const member = {
-      id: Date.now(),
+
+      id:Date.now(),
+
       name,
+      aadhaar,
       phone,
-      floor,
-      room,
-      bed,
+      address,
+
+      room:selectedRoom,
+      bed:selectedBed,
+
       rent,
       dueDate
+
     };
 
     members.push(member);
 
-    saveToLocalStorage();
+    localStorage.setItem(
+      "members",
+      JSON.stringify(members)
+    );
+
+    memberForm.reset();
+
+    selectedRoom = "";
+    selectedBed = "";
 
     displayFloors();
 
     displayAlerts();
 
-    memberForm.reset();
-
-});
+  }
+);
 
 function displayFloors(){
 
   floorsContainer.innerHTML = "";
 
-  for(let floor = 1; floor <= 5; floor++){
+  occupiedBeds.textContent =
+  members.length;
+
+  for(let floor=1; floor<=5; floor++){
 
     const floorDiv =
     document.createElement("div");
@@ -88,7 +118,10 @@ function displayFloors(){
 
     roomsGrid.classList.add("rooms-grid");
 
-    for(let room = 1; room <= 5; room++){
+    for(let room=1; room<=4; room++){
+
+      const roomNumber =
+      `${floor}0${room}`;
 
       const roomCard =
       document.createElement("div");
@@ -97,7 +130,7 @@ function displayFloors(){
 
       roomCard.innerHTML = `
         <h3>
-          Room ${room}
+          Room ${roomNumber}
         </h3>
       `;
 
@@ -106,20 +139,20 @@ function displayFloors(){
 
       bedsDiv.classList.add("beds");
 
-      for(let bed = 1; bed <= 5; bed++){
+      for(let bed=1; bed<=5; bed++){
 
         const bedDiv =
         document.createElement("div");
 
-        const memberExists =
+        const existingMember =
         members.find(
-          (member)=>
-          Number(member.floor) === floor &&
-          Number(member.room) === room &&
-          Number(member.bed) === bed
+          member =>
+
+          member.room == roomNumber &&
+          member.bed == bed
         );
 
-        if(memberExists){
+        if(existingMember){
 
           bedDiv.classList.add(
             "bed",
@@ -127,9 +160,22 @@ function displayFloors(){
           );
 
           bedDiv.innerHTML = `
-            Bed ${bed}
-            <br>
-            ${memberExists.name}
+
+            <div>
+              Bed ${bed}
+            </div>
+
+            <div>
+              ${existingMember.name}
+            </div>
+
+            <button
+              class="remove-btn"
+              onclick="removeMember(${existingMember.id})"
+            >
+              Remove
+            </button>
+
           `;
 
         }else{
@@ -140,10 +186,35 @@ function displayFloors(){
           );
 
           bedDiv.innerHTML = `
+
             Bed ${bed}
+
             <br>
+
             Available
+
           `;
+
+          bedDiv.addEventListener(
+            "click",
+            function(){
+
+              selectedRoom =
+              roomNumber;
+
+              selectedBed =
+              bed;
+
+              document.getElementById(
+                "roomNumber"
+              ).value = roomNumber;
+
+              document.getElementById(
+                "bedNumber"
+              ).value = bed;
+
+            }
+          );
 
         }
 
@@ -163,8 +234,23 @@ function displayFloors(){
 
   }
 
-  occupiedBeds.textContent =
-  members.length;
+}
+
+function removeMember(id){
+
+  members =
+  members.filter(
+    member => member.id !== id
+  );
+
+  localStorage.setItem(
+    "members",
+    JSON.stringify(members)
+  );
+
+  displayFloors();
+
+  displayAlerts();
 
 }
 
@@ -172,50 +258,65 @@ function displayAlerts(){
 
   alertsContainer.innerHTML = "";
 
-  const today = new Date();
+  const today =
+  new Date();
 
-  members.forEach((member)=>{
+  members.forEach(member => {
 
-    const due =
-    new Date(member.dueDate);
+    const dateParts =
+    member.dueDate.split("/");
+
+    const dueDate =
+    new Date(
+      dateParts[2],
+      dateParts[1]-1,
+      dateParts[0]
+    );
 
     const diffTime =
-    due - today;
+    dueDate - today;
 
     const diffDays =
     Math.ceil(
       diffTime /
-      (1000 * 60 * 60 * 24)
+      (1000*60*60*24)
     );
 
-    if(diffDays <= 5 && diffDays >= 0){
+    if(
+      diffDays <= 5 &&
+      diffDays >= 0
+    ){
 
       const alertDiv =
       document.createElement("div");
 
-      alertDiv.classList.add("alert-box");
+      alertDiv.classList.add(
+        "alert-box"
+      );
 
       alertDiv.innerHTML = `
-        <strong>
-          ${member.name}
-        </strong>
+
+        ${member.name}
 
         payment due in
+
         ${diffDays} days
+
+        <br><br>
+
+        Room :
+        ${member.room}
 
         <br>
 
-        Floor:
-        ${member.floor}
-
-        Room:
-        ${member.room}
-
-        Bed:
+        Bed :
         ${member.bed}
+
       `;
 
-      alertsContainer.appendChild(alertDiv);
+      alertsContainer.appendChild(
+        alertDiv
+      );
 
     }
 
@@ -223,15 +324,70 @@ function displayAlerts(){
 
 }
 
-function saveToLocalStorage(){
+document
+.getElementById("phone")
+.addEventListener(
+  "input",
+  function(){
 
-  localStorage.setItem(
-    "members",
-    JSON.stringify(members)
-  );
+    this.value =
+    this.value.replace(/\D/g,'');
 
-}
+  }
+);
 
-displayFloors();
+document
+.getElementById("aadhaar")
+.addEventListener(
+  "input",
+  function(){
 
-displayAlerts();
+    this.value =
+    this.value.replace(/\D/g,'');
+
+  }
+);
+
+document
+.getElementById("name")
+.addEventListener(
+  "input",
+  function(){
+
+    this.value =
+    this.value.replace(/[0-9]/g,'');
+
+  }
+);
+
+document
+.getElementById("dueDate")
+.addEventListener(
+  "input",
+  function(e){
+
+    let value =
+    e.target.value.replace(/\D/g,'');
+
+    if(value.length > 2){
+
+      value =
+      value.substring(0,2)
+      + "/"
+      + value.substring(2);
+
+    }
+
+    if(value.length > 5){
+
+      value =
+      value.substring(0,5)
+      + "/"
+      + value.substring(5,9);
+
+    }
+
+    e.target.value = value;
+
+  }
+);
